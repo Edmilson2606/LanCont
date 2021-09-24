@@ -1,0 +1,49 @@
+{% load bootstrap4 %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt.br">
+<head>
+    <meta charset="UTF-8">
+    <title>Cliente</title>
+    {% bootstrap_css %}
+</head>
+<body>
+    <div class="container">
+        <div style="text-align:left"><span><b>{{ logado }}</b></span></div>
+        <div style="text-align:right"><p><a style="color:black" href="{% url 'index' %}">Voltar</a></p></div>
+        <center>
+            <h1>Cliente</h1>
+            <h5>{{ cliente.nome }}</h5>
+            <table class="table table-dark table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Data</th>
+                        <th scope="col">Débito</th>
+                        <th scope="col">Crédito</th>
+                        <th scope="col">Valor</th>
+                        <th scope="col">Histórico</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for l in lancamento %}
+                    <tr>
+                        <td scope="row">{{ l.data_lancamento }}</td>
+                        <td scope="row">{{ l.id_conta_debito_id }}</td>
+                        <td scope="row">{{ l.id_conta_credito_id }}</td>
+                        <td scope="row">{{ l.valor }}</td>
+                        <td scope="row">{{ l.compl_historico }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </center>
+        <form action="{% url 'geracsv' %}" method="POST">
+            {% csrf_token %}
+            {% buttons %}
+                <button type="submit" class="btn-primary">Gerar CSV</button>
+            {% endbuttons %}
+        </form>
+    </div>
+{% bootstrap_javascript jquery='full' %}
+</body>
+</html>

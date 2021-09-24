@@ -1,0 +1,25 @@
+{% load bootstrap4 %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Lançamentos Contábeis</title>
+    {% bootstrap_css %}
+</head>
+<body>
+    <div class="container">
+        <div style="text-align:left"><span><b>{{ logado }}</b></span></div>
+        <div style="text-align:right"><p><a style="color:black" href="{% url 'index' %}">Voltar</a></p></div>
+        <center><h1>Lançamentos Contábeis</h1></center>
+        {% bootstrap_messages %}
+        <form action="{% url 'lancamentos' %}" method="post" class="form" autocomplete="off" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            {% buttons %}
+                <button type="submit" class="btn-primary">Salvar</button>
+            {% endbuttons %}
+        </form>
+    </div>
+{% bootstrap_javascript jquery='full' %}
+</body>
+</html>

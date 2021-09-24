@@ -1,0 +1,49 @@
+{% load bootstrap4 %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" name="contabilidade">
+    <title>LanCont</title>
+    {% bootstrap_css %}
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div style="text-align:left"><span>Bem vindo(a): <b>{{ logado }}.</b></span></div>
+        {% if acesso == 'Entrar' %}
+            <div style="text-align:right"><a style="color:black" href="admin\">{{ acesso }}</a></div>
+        {% else %}
+            <div style="text-align:right"><a style="color:black" href="/admin/logout/">{{ acesso }}</a></div>
+        {% endif %}
+        <center>
+            <h1>{{ titulo1 }}</h1>
+            <h3>{{ titulo2 }}</h3>
+            <br><br>
+            <h5><b>{{ titulo3 }}</b></h5>
+            <table class="table table-dark table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">{{ cabecalho1 }}</th>
+                        <th scope="col">{{ cabecalho2 }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cliente in clientes %}
+                        <tr>
+                            <td scope="row"><a style="color:white" href="{% url 'cliente' cliente.id %}">{{ cliente.nome }}</a></td>
+                            <td scope="row">{{ cliente.contato }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </center>
+        {% if acesso != 'Entrar' %}
+            <button type="button" class="btn btn-primary">
+                <a style="color:white" href="\lancamentos">Lançamentos Contábeis</a>
+            </button>
+        {% endif %}
+    </div>
+{% bootstrap_javascript jquery='full' %}
+</body>
+</html>

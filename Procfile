@@ -1,0 +1,1 @@
+web: gunicorn lancont.wsgi --log-file -
