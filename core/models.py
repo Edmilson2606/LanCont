@@ -5,6 +5,10 @@ class Clientes(models.Model):
     nome = models.CharField('Nome', max_length=200)
     contato = models.CharField('Contato', max_length=100)
 
+    class Meta:
+        verbose_name = 'Cliente'
+        verbose_name_plural = 'Clientes'
+
     def __str__(self):
         return self.nome
 
@@ -12,6 +16,10 @@ class Clientes(models.Model):
 class Debitos(models.Model):
     codigo_reduzido = models.IntegerField('Codigo Reduzido')
     descricao = models.CharField('Descrição', max_length=200)
+
+    class Meta:
+        verbose_name = 'Débito'
+        verbose_name_plural = 'Débitos'
 
     def __str__(self):
         return f'{self.codigo_reduzido} {self.descricao}'
@@ -21,12 +29,20 @@ class Creditos(models.Model):
     codigo_reduzido = models.IntegerField('Codigo Reduzido')
     descricao = models.CharField('Descrição', max_length=200)
 
+    class Meta:
+        verbose_name = 'Crédito'
+        verbose_name_plural = 'Créditos'
+
     def __str__(self):
         return f'{self.codigo_reduzido} {self.descricao}'
 
 
 class Historicos(models.Model):
     descricao = models.CharField('Descrição', max_length=200)
+
+    class Meta:
+        verbose_name = 'Histórico'
+        verbose_name_plural = 'Históricos'
 
     def __str__(self):
         return self.descricao
@@ -44,6 +60,10 @@ class Lancamentos(models.Model):
     cec = models.CharField('CEC', max_length=4, default='0001')
     ccrc = models.CharField('CCRC', max_length=3, default='001')
     id_cliente = models.ForeignKey('core.Clientes', verbose_name='Cliente', on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = 'Lançamento'
+        verbose_name_plural = 'Lançamentos'
 
     def __str__(self):
         return f'{self.data_lancamento} {self.id_conta_debito} {self.id_conta_credito} {self.valor}' \
