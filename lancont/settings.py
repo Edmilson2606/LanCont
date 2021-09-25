@@ -34,7 +34,7 @@ INSTALLED_APPS = [
     'core',
     'bootstrap4',
     'django_adminlte'
-    'django_adminlte_theme'
+    'django_adminlte_theme',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
