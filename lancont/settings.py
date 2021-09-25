@@ -32,15 +32,16 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'core',
-    'bootstrap4',
-    'django_adminlte'
-    'django_adminlte_theme',
+
+    'django_adminlte',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'bootstrap4',
 ]
 
 MIDDLEWARE = [
