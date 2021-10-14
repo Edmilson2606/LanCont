@@ -15,6 +15,8 @@ import csv
 from datetime import date
 from datetime import datetime
 
+identificacao = 0
+
 
 def index(request):
     if str(request.user) != 'AnonymousUser':
@@ -44,6 +46,8 @@ def cliente(request, pk):
     usuario = request.user.first_name
     cli = Clientes.objects.get(id=pk)
     lanc = Lancamentos.objects.all()
+    global identificacao
+    identificacao = cli.id
     lanca = [lan for lan in lanc if lan.id_cliente_id == cli.id]
     context = {
         'logado': usuario,
@@ -80,38 +84,41 @@ def erro500():
 def geracsv(request):
     if str(request.method) == 'POST':
         lanc = Lancamentos.objects.all()
-        debitos = Debitos.objects.all()
-        creditos = Creditos.objects.all()
-        historicos = Historicos.objects.all()
-        response = HttpResponse(
-            content_type='text/csv',
-            headers={'Content-Disposition': 'attachment; filename="lancamentos_contabeis.csv"'}
-                                )
-        writer = csv.writer(response)
-        writer.writerow([f"Tipo Registro;Data;Código da Conta Débito;Código da Conta Crédito;Valor;"
-                         f"Histórico;Código do Estabelecimento Débito;Código do Centro de Resultado Débito;"
-                         f"Código do Estabelecimento Crédito;Código do Centro de Resultado Crédito"])
-        for lan in lanc:
-            tipo = '1'
-            deb = 0
-            cred = 0
-            hist = 0
-            for debito in debitos:
-                if lan.id_conta_debito_id == debito.id:
-                    deb = debito.codigo_reduzido
-                    break
-            for credito in creditos:
-                if lan.id_conta_credito_id == credito.id:
-                    cred = credito.codigo_reduzido
-                    break
-            for historico in historicos:
-                if lan.id_historico_id == historico.id:
-                    hist = historico.descricao
-                    break
-            writer.writerow([f'{tipo};{date_para_str(lan.data_lancamento)};{deb};{cred};'
-                             f'{formata_float_str_moeda(lan.valor)};{hist} {lan.compl_historico};'
-                             f'{lan.ced};{lan.ccrd};{lan.cec};{lan.ccrc}'])
-        return response
+        lanca = [lan for lan in lanc if lan.id_cliente_id == identificacao]
+        if len(lanca) > 0:
+            debitos = Debitos.objects.all()
+            creditos = Creditos.objects.all()
+            historicos = Historicos.objects.all()
+            response = HttpResponse(
+                content_type='text/csv',
+                headers={'Content-Disposition': 'attachment; filename="lancamentos_contabeis.csv"'}
+                                    )
+            writer = csv.writer(response)
+            writer.writerow([f"Tipo Registro;Data;Código da Conta Débito;Código da Conta Crédito;Valor;"
+                             f"Histórico;Código do Estabelecimento Débito;Código do Centro de Resultado Débito;"
+                             f"Código do Estabelecimento Crédito;Código do Centro de Resultado Crédito"])
+            for lan in lanca:
+                tipo = '1'
+                deb = 0
+                cred = 0
+                hist = 0
+                for debito in debitos:
+                    if lan.id_conta_debito_id == debito.id:
+                        deb = debito.codigo_reduzido
+                        break
+                for credito in creditos:
+                    if lan.id_conta_credito_id == credito.id:
+                        cred = credito.codigo_reduzido
+                        break
+                for historico in historicos:
+                    if lan.id_historico_id == historico.id:
+                        hist = historico.descricao
+                        break
+                writer.writerow([f'{tipo};{date_para_str(lan.data_lancamento)};{deb};{cred};'
+                                 f'{formata_float_str_moeda(lan.valor)};{hist} {lan.compl_historico};'
+                                 f'{lan.ced};{lan.ccrd};{lan.cec};{lan.ccrc}'])
+            return response
+        return messages.error(request, 'Erro ao gerar o arquivo'), exit(0)
 
 
 def date_para_str(data: date) -> str:
