@@ -23,6 +23,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-fhyyq#ign&pc)0l!b0&wsvr3-ua=)in72wt0yj#9+j2ve06^c@'
 
 # SECURITY WARNING: don't run with debug turned on in production!
+# DEBUG com valor True = modo desenvolvimento
+# DEBUG com valor False = modo produção
 DEBUG = False
 
 ALLOWED_HOSTS = ['*']
@@ -33,8 +35,7 @@ ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = [
     'bootstrap4',
     'core',
-    'django_adminlte',
-    'django_adminlte_theme',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
